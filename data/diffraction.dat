@@ -1,0 +1,47 @@
+# Results from a lab experiment studying diffraction of laser light.
+# A photodiode measured the intensity of a diffraction pattern's at various
+# locations along the pattern.
+#
+# X = distance in millimetres from reference point
+# V = photodiode reading in millivolts
+X	V
+0	0.1
+1	0.0
+2	1.4
+3	3.8
+4	6.0
+5	5.7
+6	3.7
+7	2.6
+8	7.4
+9	24.0
+10	49.8
+11	81.3
+12	106.6
+13	116.7
+14	113.5
+15	92.2
+16	62.2
+17	32.8
+18	13.2
+19	4.1
+20	3.0
+21	4.8
+22	5.8
+23	4.8
+24	2.3
+25	0.4
+6.5	2.9
+7.5	3.6
+6.75	2.6
+6.8	2.6
+6.85	2.6
+6.9	2.6
+19.5	2.9
+20.5	3.9
+19.25	3.4
+19.75	2.8
+7.25	2.7
+0.50	0.0
+1.50	0.2
+25.25	0.3
