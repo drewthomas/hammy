@@ -1,6 +1,6 @@
 library(mgcv)
 
-d <- read.table("out-nwgks.dat")
+d <- read.table("output/nwgks_multicos.dat")
 d <- d[order(d$V1),]
 
 draw_nwgks_fit_with_error_curves <- function(d, mean_shift=FALSE)
