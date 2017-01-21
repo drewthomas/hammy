@@ -403,9 +403,6 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 	fprintf(stderr, "NFBL: `prev_lambda` = %g (%g), `lambda` = %g (%g)\n",
 	        prev_lambda, prev_rms, *lambda, *loo_rms);
 	#endif
-/*
-	step = -REL_INITIAL_STEP * (bound[1] - bound[0]);
-*/
 	multiplier = 1.0 - REL_INITIAL_STEP;
 	do {
 		prev_lambda = *lambda;
@@ -422,17 +419,6 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 			fprintf(stderr, "NFBL: parabolic interpolation gave %.15g\n",
 			        *lambda);
 			#endif
-			/* Once the optimizer's made it into a roughly quadratic
-			   bowl of the LOO function near a local minimum, the
-			   parabolic interpolator often undershoots the minimum.
-			   Try to adjust for that on the assumption that each
-			   parabolic-interpolation step only steps halfway to the
-			   minimum. */
-//			*lambda += (*lambda - nearby_lambda[1]);
-			#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
-			fprintf(stderr, "NFBL: accelerated interpol'd value is %.15g\n",
-			        *lambda);
-			#endif
 			absc_diff = nearby_lambda[2] - nearby_lambda[0];
 			parabolic_interpolation_worthwhile =
 				(*lambda != prev_lambda)
@@ -444,9 +430,6 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 				   `lambda` as before or by jumping some way outside the
 				   region through which it's interpolating. Fall back on
 				   trying iterative descent. */
-/*
-				*lambda = prev_lambda + step;
-*/
 				*lambda = multiplier * prev_lambda;
 				step_type = 'o';
 				#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
@@ -456,17 +439,10 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 				#endif
 			}
 		} else {
-/*
-			*lambda = prev_lambda + step;
-*/
 			*lambda = multiplier * prev_lambda;
 			step_type = 'o';
 		}
 		while ((*lambda < bound[0]) || (*lambda > bound[1])) {
-/*
-			step /= 2.0;
-			*lambda = prev_lambda + step;
-*/
 			multiplier = (1.0 + multiplier) / 2.0;
 			#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
 			fprintf(stderr, "NFBL: {1} `multiplier` = %g\n", multiplier);
@@ -478,24 +454,13 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 		fprintf(stderr, "NFBL: `lambda` from %g to %.9g (LR %.15g)\n",
 		        prev_lambda, *lambda, *loo_rms);
 		#endif
-/*
-		if (*loo_rms < prev_rms) {
-			step *= 2.0;
-		} else {
-			step /= -2.0;
-		}
-*/
 		if (step_type == 'o') {
 			if (*loo_rms < prev_rms) {
-//				multiplier *= multiplier;
-//				multiplier = pow(multiplier, 2.3);
 				multiplier += (multiplier - 1.0);
 				#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
 				fprintf(stderr, "NFBL: {2} `multiplier` = %g\n", multiplier);
 				#endif
 			} else {
-//				multiplier = 1.0 / sqrt(multiplier);
-//				multiplier = pow(multiplier, -0.7);
 				multiplier = 1.0 + ((1.0 - multiplier) / 2.0);
 				#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
 				fprintf(stderr, "NFBL: {3} `multiplier` = %g\n", multiplier);
