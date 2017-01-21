@@ -365,9 +365,9 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 	   seems a good choice for a few datasets).
 
 	   Then try to iteratively converge on the optimal lambda, step by step.
-	   When a step successfully reduces the RMS, double the step
-	   size; if a step raises the RMS instead, halve the step size and
-	   negate it to induce a doubling back. */
+	   When a step successfully reduces the RMS, increase the step
+	   size; if a step raises the RMS instead, shrink the step size and
+	   double back. */
 
 	*lambda = pow(bound[0], 0.75) * pow(bound[1], 0.25);
 	*loo_rms = nwgks_loo_rms(b, pow(bound[0], 0.75) * pow(bound[1], 0.25));
@@ -416,7 +416,6 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 			&& isnormal(nearby_lambda[2])
 			&& ((nearby_lambda[2] / nearby_lambda[0]) < PI_TRIGGER_RATIO);
 		if (parabolic_interpolation_worthwhile) {
-//			*lambda = parab_interp(nearby_lambda, nearby_rms);
 			*lambda = parab_interp_log_scale(nearby_lambda, nearby_rms);
 			step_type = 'p';
 			#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
@@ -497,7 +496,7 @@ bool nwgks_fit_by_loo(const Bivariate* b, double* lambda, double* loo_rms, unsig
 			} else {
 //				multiplier = 1.0 / sqrt(multiplier);
 //				multiplier = pow(multiplier, -0.7);
-				multiplier -= (multiplier - 1.0);
+				multiplier = 1.0 + ((1.0 - multiplier) / 2.0);
 				#ifdef NWGKS_DEBUG_OUTPUT_TO_STDERR
 				fprintf(stderr, "NFBL: {3} `multiplier` = %g\n", multiplier);
 				#endif

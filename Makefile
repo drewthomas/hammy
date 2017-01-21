@@ -5,8 +5,7 @@ nwgks: nwgks.[ch] data.[ch] Makefile
 .PHONY nwgksloo_output \
 output/nwgksloo_JS.dat output/nwgksloo_CO2.dat output/nwgksloo_RVN63.dat \
 output/nwgksloo_RPDI.dat output/nwgksloo_diffract.dat \
-output/nwgksloo_cosine.dat output/nwgksloo_zigzag.dat \
-output/nwgksloo_multicos.dat output/nwgksloo_cosine.dat \
+output/nwgksloo_cosine.dat output/nwgksloo_multicos.dat \
 output/nwgksloo_zigzag.dat: nwgksloo data/*.dat
 	./nwgksloo < data/JS_recount_money.dat > output/nwgksloo_JS.dat
 	./nwgksloo < data/NOAA_ESRL_CO2.dat > output/nwgksloo_CO2.dat
