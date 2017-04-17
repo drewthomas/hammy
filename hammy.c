@@ -51,7 +51,7 @@ void fit_for_initial_param_estimates(Bivariate* b, const Multivariate* w, unsign
 		lambda[i] = 0.0;  /* indicate that `lambda[i]` is unknown */
 	    nwgks_fit_by_loo(&(b[i]), &(lambda[i]), &(loo_rms[i]),
 		                 fit_iterations, &(est_err_var[i]));
-		                 
+
 		#ifdef HAMMY_DEBUG_OUTPUT_TO_STDERR
 		fprintf(stderr, " 1.%u: %9g %4u %11g           %12g\n",
 		        1 + i, lambda[i], *fit_iterations, loo_rms[i],
